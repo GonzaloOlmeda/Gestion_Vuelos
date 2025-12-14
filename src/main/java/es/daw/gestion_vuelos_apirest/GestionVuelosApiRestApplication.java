@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class GestionVuelosApiRestApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(GestionVuelosApiRestApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(GestionVuelosApiRestApplication.class, args);
+    }
 
 }
