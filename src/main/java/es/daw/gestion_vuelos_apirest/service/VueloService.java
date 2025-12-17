@@ -45,4 +45,13 @@ public class VueloService {
         vueloRepository.delete(vuelo);
 
     }
+
+    @Transactional
+    public void deleteVueloByDestino(String destino) {
+        List<Vuelo> vuelos = vueloRepository.findAll().stream()
+                .filter(vuelo -> vuelo.getDestino().equalsIgnoreCase(destino))
+                .toList();
+
+        vueloRepository.deleteAll(vuelos);
+    }
 }

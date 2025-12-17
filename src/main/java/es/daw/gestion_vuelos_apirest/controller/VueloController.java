@@ -39,4 +39,10 @@ public class VueloController {
         return ResponseEntity.noContent().build();
     }
 
+    @DeleteMapping("/delete/destino/{destino}")
+    public ResponseEntity<Void> deleteVueloByDestino(@PathVariable String destino){
+        vueloService.deleteVueloByDestino(destino);
+        return ResponseEntity.noContent().build();
+    }
+
 }
