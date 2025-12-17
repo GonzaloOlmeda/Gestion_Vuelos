@@ -7,6 +7,7 @@ import es.daw.gestion_vuelos_apirest.mapper.VueloMapper;
 import es.daw.gestion_vuelos_apirest.repository.VueloRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,29 +19,30 @@ public class VueloService {
     private final VueloMapper vueloMapper;
 
 
+    @Transactional(readOnly = true)
     public List<VueloResponseDTO> filterVuelos(String origen, String destino, Integer escalas) {
 
-
-        return vueloRepository.filterVuelos(origen, destino, escalas)
-                .orElseGet(List::of);
-
+        List<Vuelo> vuelos = vueloRepository.filterVuelos(origen, destino, escalas);
+        return vueloMapper.toResponseDTOList(vuelos);
     }
 
-    public void createVuelos(VueloRequestDTO vueloRequestDTO) {
+    @Transactional
+    public VueloResponseDTO createVuelo(VueloRequestDTO vueloRequestDTO) {
 
-        if(vueloRequestDTO== null) {
-            throw new IllegalArgumentException("El vuelo no puede ser nulo");
-        }
+        Vuelo vuelo = vueloMapper.toEntity(vueloRequestDTO);
+        Vuelo vueloGuardado = vueloRepository.save(vuelo);
 
-        Vuelo vuelo = new Vuelo();
-        vuelo.setOrigen(vueloRequestDTO.getOrigen());
-        vuelo.setDestino(vueloRequestDTO.getDestino());
-        vuelo.setPrecio(vueloRequestDTO.getPrecio());
-        vuelo.setNumeroEscalas(vueloRequestDTO.getNumero_escalas());
-        vuelo.setCompania(vueloRequestDTO.getCompania());
+        return vueloMapper.toResponseDTO(vueloGuardado);
+    }
 
-        vueloRepository.save(vuelo);
+    @Transactional
+    public void deleteVuelo(Long id) {
 
+        Vuelo vuelo = vueloRepository.findById(id)
+//                .orElseThrow(() -> new VueloNotFoundException("Vuelo no encontrado con ID: " + id)); // pendiente excepci��n
+                .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id)); // pendiente hacer excepci��n propia
+
+        vueloRepository.delete(vuelo);
 
     }
 }

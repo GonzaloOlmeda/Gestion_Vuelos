@@ -8,47 +8,39 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class VueloMapper {
 
-    public VueloResponseDTO toResponseDTO(Vuelo vuelo){
 
-        if(vuelo == null) return null;
-
-        VueloResponseDTO dto = new VueloResponseDTO();
-        dto.setId(vuelo.getId());
-        dto.setOrigen(vuelo.getOrigen());
-        dto.setDestino(vuelo.getDestino());
-        dto.setPrecio(vuelo.getPrecio());
-        dto.setNumero_escalas(vuelo.getNumeroEscalas());
-        dto.setCompania(vuelo.getCompania());
-
-        return toResponseDTO(vuelo);
-
+    public VueloResponseDTO toResponseDTO(Vuelo vuelo) {
+        return new VueloResponseDTO(
+                vuelo.getId(),
+                vuelo.getOrigen(),
+                vuelo.getDestino(),
+                vuelo.getPrecio(),
+                vuelo.getNumeroEscalas(),
+                vuelo.getCompania()
+        );
     }
 
-    public VueloRequestDTO toRequestDTO(Vuelo vuelo){
+    public Vuelo toEntity(VueloRequestDTO dto) {
+        Vuelo vuelo = new Vuelo();
+        vuelo.setOrigen(dto.getOrigen());
+        vuelo.setDestino(dto.getDestino());
+        vuelo.setPrecio(dto.getPrecio());
+        vuelo.setNumeroEscalas(dto.getNumeroEscalas());
+        vuelo.setCompania(dto.getCompania());
+        return vuelo;
+    }
 
-        if(vuelo == null) return null;
-
-        VueloResponseDTO dto = new VueloResponseDTO();
-        dto.setOrigen(vuelo.getOrigen());
-        dto.setDestino(vuelo.getDestino());
-        dto.setPrecio(vuelo.getPrecio());
-        dto.setNumero_escalas(vuelo.getNumeroEscalas());
-        dto.setCompania(vuelo.getCompania());
-
-        return toRequestDTO(vuelo);
-
+    public List<VueloResponseDTO> toResponseDTOList(List<Vuelo> vuelos) {
+        return vuelos.stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
 
 
-
-
-    public List<VueloResponseDTO> toDTOList(List<Vuelo> getVuelos) {
-
-        return getVuelos.stream().map(this::toResponseDTO).toList();
-    }
 }
