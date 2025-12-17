@@ -2,12 +2,16 @@ package es.daw.gestion_vuelos_apirest.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-public class vueloDTO {
+@AllArgsConstructor
+@RequiredArgsConstructor
+public class VueloResponseDTO {
 
-    private String id;
+    private Long id;
 
     @NotBlank(message = "El origen no puede estar vacío")
     private String origen;
@@ -23,4 +27,5 @@ public class vueloDTO {
 
     @NotBlank(message = "El vuelo debe tener una compañía asignada")
     private String compania;
+
 }
