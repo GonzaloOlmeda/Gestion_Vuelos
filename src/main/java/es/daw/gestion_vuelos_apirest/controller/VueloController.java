@@ -1,6 +1,7 @@
 package es.daw.gestion_vuelos_apirest.controller;
 
 import es.daw.gestion_vuelos_apirest.dto.VueloRequestDTO;
+import es.daw.gestion_vuelos_apirest.dto.VueloRequestParcialDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.service.VueloService;
 import jakarta.validation.Valid;
@@ -50,6 +51,12 @@ public class VueloController {
         VueloResponseDTO vueloActualizado = vueloService.updateVuelo(id, vueloRequestDTO);
         return ResponseEntity.ok(vueloActualizado);
 
+    }
+
+    @PostMapping("/partial-update/{id}" )
+    public ResponseEntity<VueloResponseDTO> updateVueloParcial(@Valid @PathVariable Long id, @RequestBody VueloRequestParcialDTO vueloRequestParcialDTO){
+        VueloResponseDTO vueloActualizado = vueloService.updateVueloPartial(id, vueloRequestParcialDTO);
+        return  ResponseEntity.ok(vueloActualizado);
     }
 
 }

@@ -1,6 +1,7 @@
 package es.daw.gestion_vuelos_apirest.service;
 
 import es.daw.gestion_vuelos_apirest.dto.VueloRequestDTO;
+import es.daw.gestion_vuelos_apirest.dto.VueloRequestParcialDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.entity.Vuelo;
 import es.daw.gestion_vuelos_apirest.mapper.VueloMapper;
@@ -70,6 +71,21 @@ public class VueloService {
         Vuelo vueloActualizado = vueloRepository.save(vuelo);
 
         return vueloMapper.toResponseDTO(vueloActualizado);
+    }
+
+    @Transactional
+    public VueloResponseDTO updateVueloPartial(Long id, VueloRequestParcialDTO vueloRequestParcialDTO){
+
+          Vuelo vuelo = vueloRepository.findById(id)
+                  .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id));
+
+         vuelo.setOrigen(vueloRequestParcialDTO.getOrigen());
+         vuelo.setDestino(vueloRequestParcialDTO.getDestino());
+         vuelo.setPrecio(vueloRequestParcialDTO.getPrecio());
+
+         Vuelo vueloActualizadoParcial = vueloRepository.save(vuelo);
+
+         return vueloMapper.toResponseDTO(vueloActualizadoParcial);
     }
 
 }
