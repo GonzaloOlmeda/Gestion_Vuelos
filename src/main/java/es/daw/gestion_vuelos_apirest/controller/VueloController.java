@@ -45,4 +45,11 @@ public class VueloController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/update/{id}")
+    public ResponseEntity<VueloResponseDTO> updateVuelo(@Valid @PathVariable Long id, @RequestBody VueloRequestDTO vueloRequestDTO){
+        VueloResponseDTO vueloActualizado = vueloService.updateVuelo(id, vueloRequestDTO);
+        return ResponseEntity.ok(vueloActualizado);
+
+    }
+
 }

@@ -21,7 +21,6 @@ public class VueloService {
 
     @Transactional(readOnly = true)
     public List<VueloResponseDTO> filterVuelos(String origen, String destino, Integer escalas) {
-
         List<Vuelo> vuelos = vueloRepository.filterVuelos(origen, destino, escalas);
         return vueloMapper.toResponseDTOList(vuelos);
     }
@@ -54,4 +53,25 @@ public class VueloService {
 
         vueloRepository.deleteAll(vuelos);
     }
+
+    @Transactional
+    public VueloResponseDTO updateVuelo(Long id, VueloRequestDTO vueloRequestDTO){
+
+        Vuelo vuelo = vueloRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id)); // pendiente hacer excepci��n propia
+
+
+        vuelo.setOrigen(vueloRequestDTO.getOrigen());
+        vuelo.setDestino(vueloRequestDTO.getDestino());
+        vuelo.setPrecio(vueloRequestDTO.getPrecio());
+        vuelo.setNumeroEscalas(vueloRequestDTO.getNumeroEscalas());
+        vuelo.setCompania(vueloRequestDTO.getCompania());
+
+        Vuelo vueloActualizado = vueloRepository.save(vuelo);
+
+        return vueloMapper.toResponseDTO(vueloActualizado);
+    }
+
 }
+
+
