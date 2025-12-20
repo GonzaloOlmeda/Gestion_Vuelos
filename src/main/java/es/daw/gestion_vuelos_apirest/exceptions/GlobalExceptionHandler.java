@@ -16,5 +16,13 @@ public class GlobalExceptionHandler {
                 .body(ex.getMessage());
     }
 
+    @ExceptionHandler(VueloAlreadyExistsException.class)
+    public ResponseEntity<String> handleVueloAlreadyExistsException(VueloAlreadyExistsException ex) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ex.getMessage());
+    }
+
+
 
 }

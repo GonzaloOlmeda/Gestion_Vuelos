@@ -4,6 +4,7 @@ import es.daw.gestion_vuelos_apirest.dto.VueloRequestDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloRequestParcialDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.entity.Vuelo;
+import es.daw.gestion_vuelos_apirest.exceptions.VueloAlreadyExistsException;
 import es.daw.gestion_vuelos_apirest.exceptions.VueloNotFoundException;
 import es.daw.gestion_vuelos_apirest.mapper.VueloMapper;
 import es.daw.gestion_vuelos_apirest.repository.VueloRepository;
@@ -29,6 +30,20 @@ public class VueloService {
 
     @Transactional
     public VueloResponseDTO createVuelo(VueloRequestDTO vueloRequestDTO) {
+
+        boolean existe = vueloRepository.existsByOrigenAndDestinoAndCompania(
+                vueloRequestDTO.getOrigen(),
+                vueloRequestDTO.getDestino(),
+                vueloRequestDTO.getCompania()
+        );
+
+        if(existe){
+            throw new VueloAlreadyExistsException(
+                    vueloRequestDTO.getOrigen(),
+                    vueloRequestDTO.getDestino(),
+                    vueloRequestDTO.getCompania()
+            );
+        }
 
         Vuelo vuelo = vueloMapper.toEntity(vueloRequestDTO);
         Vuelo vueloGuardado = vueloRepository.save(vuelo);
