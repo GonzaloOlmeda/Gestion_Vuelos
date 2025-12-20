@@ -4,6 +4,7 @@ import es.daw.gestion_vuelos_apirest.dto.VueloRequestDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloRequestParcialDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.entity.Vuelo;
+import es.daw.gestion_vuelos_apirest.exceptions.VueloNotFoundException;
 import es.daw.gestion_vuelos_apirest.mapper.VueloMapper;
 import es.daw.gestion_vuelos_apirest.repository.VueloRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,27 +40,31 @@ public class VueloService {
     public void deleteVuelo(Long id) {
 
         Vuelo vuelo = vueloRepository.findById(id)
-//                .orElseThrow(() -> new VueloNotFoundException("Vuelo no encontrado con ID: " + id)); // pendiente excepci��n
-                .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id)); // pendiente hacer excepci��n propia
-
+                .orElseThrow(() -> new VueloNotFoundException(id));
         vueloRepository.delete(vuelo);
 
     }
 
     @Transactional
     public void deleteVueloByDestino(String destino) {
-        List<Vuelo> vuelos = vueloRepository.findAll().stream()
-                .filter(vuelo -> vuelo.getDestino().equalsIgnoreCase(destino))
-                .toList();
 
-        vueloRepository.deleteAll(vuelos);
+            List<Vuelo> vuelos = vueloRepository.findAll()
+                    .stream()
+                    .filter(vuelo -> vuelo.getDestino().equalsIgnoreCase(destino))
+                    .toList();
+
+        if (vuelos.isEmpty()) {
+            throw new VueloNotFoundException(destino);
+        }
+
+            vueloRepository.deleteAll(vuelos);
     }
 
     @Transactional
     public VueloResponseDTO updateVuelo(Long id, VueloRequestDTO vueloRequestDTO){
 
         Vuelo vuelo = vueloRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id)); // pendiente hacer excepci��n propia
+                .orElseThrow(() -> new VueloNotFoundException(id));
 
 
         vuelo.setOrigen(vueloRequestDTO.getOrigen());
@@ -77,7 +82,7 @@ public class VueloService {
     public VueloResponseDTO updateVueloPartial(Long id, VueloRequestParcialDTO vueloRequestParcialDTO){
 
           Vuelo vuelo = vueloRepository.findById(id)
-                  .orElseThrow(() -> new RuntimeException("Vuelo no encontrado con ID: " + id));
+                  .orElseThrow(() -> new VueloNotFoundException(id));
 
          vuelo.setOrigen(vueloRequestParcialDTO.getOrigen());
          vuelo.setDestino(vueloRequestParcialDTO.getDestino());
