@@ -17,3 +17,14 @@ INSERT INTO vuelos (origen, destino, precio, numero_escalas, compania) VALUES
                                                                            ('Málaga', 'Bruselas', 98.00, 0, 'Brussels Airlines'),
                                                                            ('Madrid', 'Lisboa', 75.00, 0, 'TAP Portugal'),
                                                                            ('Barcelona', 'Múnich', 115.00, 0, 'Lufthansa');
+
+
+
+-- Datos iniciales para usuarios
+-- Contraseña para admin: admin123
+-- Contraseña para user1 y user2: user123
+
+INSERT INTO usuarios (username, email, password, rol) VALUES
+                                                          ('admin', 'admin@vuelos.com', '$2a$10$xLFTBOjIQXhZqJ2u3bKQB.gVc5zqJqxHJZ7xKXhFRYxJ3YqKQNzCy', 'ADMIN'),
+                                                          ('user1', 'user1@email.com', '$2a$10$mE.qmcV7X/dFLkJLhXKLUO3KqZHKl4J5Y4xJ7xKQNzCy2u3bKQB.g', 'USER'),
+                                                          ('user2', 'user2@email.com', '$2a$10$mE.qmcV7X/dFLkJLhXKLUO3KqZHKl4J5Y4xJ7xKQNzCy2u3bKQB.g', 'USER');
