@@ -25,6 +25,6 @@ INSERT INTO vuelos (origen, destino, precio, numero_escalas, compania) VALUES
 -- Contraseña para user1 y user2: user123
 
 INSERT INTO usuarios (username, email, password, rol) VALUES
-                                                          ('admin', 'admin@vuelos.com', '$2a$10$xLFTBOjIQXhZqJ2u3bKQB.gVc5zqJqxHJZ7xKXhFRYxJ3YqKQNzCy', 'ADMIN'),
-                                                          ('user1', 'user1@email.com', '$2a$10$mE.qmcV7X/dFLkJLhXKLUO3KqZHKl4J5Y4xJ7xKQNzCy2u3bKQB.g', 'USER'),
-                                                          ('user2', 'user2@email.com', '$2a$10$mE.qmcV7X/dFLkJLhXKLUO3KqZHKl4J5Y4xJ7xKQNzCy2u3bKQB.g', 'USER');
+                                                          ('admin', 'admin@vuelos.com', '$2a$10$.s3wAPM7uN0H1sRLWs7/Iuo/inSzBPpfuo0U1JoWbr.nFRFFvykzm', 'ADMIN'),
+                                                          ('user1', 'user1@email.com', '$2a$10$btc9xXq8Q35DIpvUHOfHm.BFd0qMYMqBV62PjxvOKg9pKB//B1JaC', 'USER'),
+                                                          ('user2', 'user2@email.com', '$2a$10$btc9xXq8Q35DIpvUHOfHm.BFd0qMYMqBV62PjxvOKg9pKB//B1JaC', 'USER');

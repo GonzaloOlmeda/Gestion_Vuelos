@@ -1,5 +1,6 @@
 package es.daw.gestion_vuelos_apirest.controller;
 
+import es.daw.gestion_vuelos_apirest.dto.LoginRequest;
 import es.daw.gestion_vuelos_apirest.dto.RegisterRequest;
 import es.daw.gestion_vuelos_apirest.dto.TokenResponse;
 import es.daw.gestion_vuelos_apirest.service.AuthService;
@@ -19,10 +20,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<TokenResponse> register (@RequestBody final RegisterRequest registerRequest) {
-
         final TokenResponse token = authService.register(registerRequest);
         return ResponseEntity.ok(token);
-
     }
 
 
@@ -31,5 +30,12 @@ public class AuthController {
         final TokenResponse token = authService.registerAdmin(registerRequest);
         return ResponseEntity.ok(token);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(@RequestBody final LoginRequest loginRequest) {
+        final TokenResponse token = authService.login(loginRequest);
+        return ResponseEntity.ok(token);
+    }
+
 
 }

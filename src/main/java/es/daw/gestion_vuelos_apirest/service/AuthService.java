@@ -1,5 +1,6 @@
 package es.daw.gestion_vuelos_apirest.service;
 
+import es.daw.gestion_vuelos_apirest.dto.LoginRequest;
 import es.daw.gestion_vuelos_apirest.dto.RegisterRequest;
 import es.daw.gestion_vuelos_apirest.dto.TokenResponse;
 import es.daw.gestion_vuelos_apirest.entity.Token;
@@ -77,4 +78,39 @@ public class AuthService {
                 .build();
         tokenRepository.save(token);
     }
+
+
+    public TokenResponse login(LoginRequest request) {
+        // Buscar el usuario por email
+        Usuario usuario = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        // Verificar la contraseña
+        if (!passwordEncoder.matches(request.password(), usuario.getPassword())) {
+            throw new RuntimeException("Contraseña incorrecta");
+        }
+
+        // Revocar tokens anteriores del usuario
+        revokeAllUserTokens(usuario);
+
+        // Generar nuevos tokens
+        String jwtToken = jwtService.generateToken(usuario);
+        String refreshToken = jwtService.generateRefreshToken(usuario);
+
+        saveUserToken(usuario, jwtToken);
+        return new TokenResponse(jwtToken, refreshToken);
+    }
+
+    private void revokeAllUserTokens(Usuario usuario) {
+        var validUserTokens = tokenRepository.findAllValidTokensByUsuario(usuario.getId());
+        if (validUserTokens.isEmpty()) {
+            return;
+        }
+        validUserTokens.forEach(token -> {
+            token.setExpirado(true);
+            token.setRevocado(true);
+        });
+        tokenRepository.saveAll(validUserTokens);
+    }
+
 }
