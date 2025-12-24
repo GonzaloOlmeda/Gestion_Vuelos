@@ -6,11 +6,11 @@ import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.service.VueloService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/vuelos")
@@ -20,10 +20,11 @@ public class VueloController {
     private final VueloService vueloService;
 
     @GetMapping()
-    public ResponseEntity<List<VueloResponseDTO>> filterVuelos(@RequestParam(required = false) String origen,
+    public ResponseEntity<Page<VueloResponseDTO>> filterVuelos(@RequestParam(required = false) String origen,
                                                                @RequestParam(required = false) String destino,
-                                                               @RequestParam(required = false) Integer escalas){
-        List<VueloResponseDTO> vuelos = vueloService.filterVuelos(origen, destino, escalas);
+                                                               @RequestParam(required = false) Integer escalas,
+                                                               Pageable pageable){
+        Page<VueloResponseDTO> vuelos = vueloService.filterVuelos(origen, destino, escalas, pageable);
         return ResponseEntity.ok(vuelos);
     }
 

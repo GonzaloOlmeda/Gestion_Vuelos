@@ -73,8 +73,8 @@ public class AuthService {
                 .usuario(usuario)
                 .token(jwtToken)
                 .tipo("BEARER")
-                .expirado(false)
-                .revocado(false)
+                .expirado(Boolean.valueOf(false))
+                .revocado(Boolean.valueOf(false))
                 .build();
         tokenRepository.save(token);
     }
@@ -107,8 +107,8 @@ public class AuthService {
             return;
         }
         validUserTokens.forEach(token -> {
-            token.setExpirado(true);
-            token.setRevocado(true);
+            token.setExpirado(Boolean.valueOf(true));
+            token.setRevocado(Boolean.valueOf(true));
         });
         tokenRepository.saveAll(validUserTokens);
     }

@@ -9,6 +9,8 @@ import es.daw.gestion_vuelos_apirest.exceptions.VueloNotFoundException;
 import es.daw.gestion_vuelos_apirest.mapper.VueloMapper;
 import es.daw.gestion_vuelos_apirest.repository.VueloRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,8 @@ public class VueloService {
 
 
     @Transactional(readOnly = true)
-    public List<VueloResponseDTO> filterVuelos(String origen, String destino, Integer escalas) {
-        List<Vuelo> vuelos = vueloRepository.filterVuelos(origen, destino, escalas);
+    public Page<VueloResponseDTO> filterVuelos(String origen, String destino, Integer escalas, Pageable pageable) {
+        Page<Vuelo> vuelos = vueloRepository.filterVuelos(origen, destino, escalas, pageable);
         return vueloMapper.toResponseDTOList(vuelos);
     }
 

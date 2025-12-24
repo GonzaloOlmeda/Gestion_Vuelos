@@ -5,10 +5,9 @@ import es.daw.gestion_vuelos_apirest.dto.VueloRequestDTO;
 import es.daw.gestion_vuelos_apirest.dto.VueloResponseDTO;
 import es.daw.gestion_vuelos_apirest.entity.Vuelo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -36,10 +35,8 @@ public class VueloMapper {
         return vuelo;
     }
 
-    public List<VueloResponseDTO> toResponseDTOList(List<Vuelo> vuelos) {
-        return vuelos.stream()
-                .map(this::toResponseDTO)
-                .collect(Collectors.toList());
+    public Page<VueloResponseDTO> toResponseDTOList(Page<Vuelo> vuelos) {
+        return vuelos.map(this::toResponseDTO);
     }
 
 
